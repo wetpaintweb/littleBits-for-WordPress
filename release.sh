@@ -22,7 +22,7 @@ sed -i'' -e "s/Stable tag: .*/Stable tag: ${version}/" README.txt
 sed -i'' -e "s/Version:           .*/Version:           ${version}/" ${package}.php
 sed -i'' -e "s/this->version = '.*';/this->version = '${version}';/" includes/class-${package}.php
 
-if ([[ $(git st | grep readme.txt) ]] || [[ $(git st | grep ${package}.php) ]]); then
+if ([[ $(git status | grep readme.txt) ]] || [[ $(git status | grep ${package}.php) ]]); then
 	echo "Committing changes"
 	git add readme.txt
 	git add ${package}.php
