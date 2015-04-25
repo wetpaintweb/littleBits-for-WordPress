@@ -22,5 +22,8 @@ Connect your WordPress site to the littleBits API and trigger remote actions.
 
 == Changelog ==
 
+= 1.0.1 =
+* Updated integration label on admin page
+
 = 1.0 =
 * Initial Release
