@@ -18,14 +18,15 @@ fi
 echo "Releasing version ${version}"
 
 echo "Setting version number in readme.txt and php files"
-sed -i '' -e "s/Stable tag: .*/Stable tag: ${version}/" README.txt
-sed -i '' -e "s/Version:           .*/Version:           ${version}/" ${package}.php
-sed -i '' -e "s/this->version = '.*';/this->version = '${version}';/" includes/class-${package}.php
+perl -pi -e "s/Stable tag: .*/Stable tag: ${version}/g" README.txt
+perl -pi -e "s/Version:           .*/Version:           ${version}/g" ${package}.php
+perl -pi -e "s/this->version = '.*';/this->version = '${version}';/g" includes/class-${package}.php
 
 if ([[ $(git status | grep readme.txt) ]] || [[ $(git status | grep ${package}.php) ]]); then
 	echo "Committing changes"
-	git add readme.txt
+	git add README.txt
 	git add ${package}.php
+	git add includes/class-${package}.php
 	git commit -m"Update readme with new stable tag $version"
 fi
 
@@ -43,8 +44,8 @@ rsync -rv --delete --exclude=".git" --exclude=".svn" --exclude="release.sh" --ex
 
 cd /tmp/release-${package}/
 # Add and delete new/old files.
-svn status | grep "^!" | awk '{print $2"@"}' | tr \\n \\0 | xargs -0 svn delete
-svn status | grep "^?" | awk '{print $2"@"}' | tr \\n \\0 | xargs -0 svn add
+svn status | grep "^!" | awk '{print $2"@"}' | tr \\n \\0 | xargs -0 svn delete || true
+svn status | grep "^?" | awk '{print $2"@"}' | tr \\n \\0 | xargs -0 svn add || true
 
 echo "Commiting version ${version} to Wordpress SVN"
 svn commit --username ${wordpressuser} -m"Releasing version ${version}" /tmp/release-${package}
