@@ -22,6 +22,9 @@ Connect your WordPress site to the littleBits API and trigger remote actions.
 
 == Changelog ==
 
+= 1.1.2 =
+* Bug Fix - removed error_log() debugging function
+
 = 1.1.1 =
 * Fixing issue with deploy
 
